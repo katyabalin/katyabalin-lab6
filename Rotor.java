@@ -13,17 +13,18 @@ public class Rotor {
     }
     
     public boolean rotate(){
-        //TODO
-               
+        position = (position + 1) % rotorValues.length();
+        return rotorValues.charAt(position) == startChar;
     }
     
 
     public int indexOf(char c){
-        //TODO
+        int index = rotorValues.indexOf(c);
+        return (index - position + rotorValues.length()) % rotorValues.length();
     }
 
     public char charAt(int idx){
-        //TODO
+        return rotorValues.charAt((idx + position) % rotorValues.length());
     }
 }
     
