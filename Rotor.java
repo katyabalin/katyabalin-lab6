@@ -3,12 +3,13 @@ public class Rotor {
     
     private String rotorValues;
     private char startChar;
+    private int position;
         
     public Rotor(String v, char c){
         this.rotorValues = new String(v);
         this.startChar = c;
+        this.position = rotorValues.indexOf(startChar);
         
-        while(!this.rotate());
             
     }
     
