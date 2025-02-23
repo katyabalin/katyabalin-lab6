@@ -20,13 +20,29 @@ public class Enigma{
 
 
     public String decrypt(String message){        
-        //TODO
+        StringBuilder result = new StringBuilder();
+        for (char c : message.toCharArray()) {
+            char step1 = rotors[2].charAt(rotors[2].indexOf(c));
+            char step2 = rotors[1].charAt(rotors[1].indexOf(step1));
+            char step3 = rotors[0].charAt(rotors[0].indexOf(step2));
+            result.append(step3);
+            rotate();
+        }
+        return result.toString();
     }
 
 
     
     public String encrypt(String message){
-        //TODO
+        StringBuilder result = new StringBuilder();
+        for (char c : message.toCharArray()) {
+            char step1 = rotors[0].charAt(rotors[0].indexOf(c));
+            char step2 = rotors[1].charAt(rotors[1].indexOf(step1));
+            char step3 = rotors[2].charAt(rotors[2].indexOf(step2));
+            result.append(step3);
+            rotate();
+        }
+        return result.toString();
     }
 
     
