@@ -1,5 +1,4 @@
 public class Enigma {
-
     private String rotorInit[] = {
         "#GNUAHOVBIPWCJQXDKRYELSZFMT", // Rotor 1
         "#EJOTYCHMRWAFKPUZDINSXBGLQV", // Rotor 2
@@ -35,11 +34,9 @@ public class Enigma {
         for (char c : message.toCharArray()) {
             char original = c;
 
-            // Step 1: Find character in inner rotor and map it through middle rotor
-            int index1 = rotors[0].indexOf(c);
-            char step1 = rotors[1].charAt(index1);
-
-            // Step 2: Find mapped character in middle rotor and map it through outer rotor
+            // Encrypt through each rotor
+            int index = rotors[0].indexOf(c);
+            char step1 = rotors[1].charAt(index);
             int index2 = rotors[1].indexOf(step1);
             char step2 = rotors[2].charAt(index2);
 
@@ -64,11 +61,9 @@ public class Enigma {
         for (char c : message.toCharArray()) {
             char original = c;
 
-            // Step 1: Find character in outer rotor and map it back through middle rotor
+            // Decrypt through rotors in reverse order
             int index2 = rotors[2].indexOf(c);
             char step2 = rotors[1].charAt(index2);
-
-            // Step 2: Find mapped character in middle rotor and map it back through inner rotor
             int index1 = rotors[1].indexOf(step2);
             char step1 = rotors[0].charAt(index1);
 
