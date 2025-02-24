@@ -3,26 +3,30 @@ public class Rotor {
     private String rotorValues;
     private int currentPosition;
 
-    public Rotor(String v, char c){
+    public Rotor(String v, char c) {
         this.rotorValues = v;
         this.currentPosition = rotorValues.indexOf(c);
+        System.out.printf("🚀 Rotor Initialized: '%s' Start Position: '%c' (Index: %d)\n", v, c, currentPosition);
     }
 
-    // Rotate the rotor one position clockwise
-    public boolean rotate(){
+    public boolean rotate() {
         currentPosition = (currentPosition + 1) % rotorValues.length();
-        return currentPosition == 0;  // Returns true if full rotation completed
+        System.out.printf("🔄 Rotor Stepped to Position: %d\n", currentPosition);
+        return currentPosition == 0;
     }
 
-    // Get the index of a given character in the rotor
-    public int indexOf(char c){
+    public int indexOf(char c) {
         int index = rotorValues.indexOf(c);
-        if (index == -1) return -1;  // Handle characters not found
-        return (index - currentPosition + rotorValues.length()) % rotorValues.length();
+        if (index == -1) {
+            System.out.println("❌ Character '" + c + "' not found in rotor.");
+            return -1;
+        }
+        int adjustedIndex = (index - currentPosition + rotorValues.length()) % rotorValues.length();
+        return adjustedIndex;
     }
 
-    // Get the character at a specific index in the rotor
-    public char charAt(int idx){
-        return rotorValues.charAt((idx + currentPosition) % rotorValues.length());
+    public char charAt(int idx) {
+        char result = rotorValues.charAt((idx + currentPosition) % rotorValues.length());
+        return result;
     }
 }
