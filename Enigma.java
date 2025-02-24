@@ -40,7 +40,7 @@ public class Enigma {
             int num1 = rotors[2].indexOf(message.charAt(i));
             char middleRotorDraft = rotors[1].charAt(num1);
 
-            int num2 = rotors[1].indexOf(middleRotorDraft);
+            int num2 = rotors[2].indexOf(middleRotorDraft);
             char finalChar = rotors[0].charAt(num2);
 
             rotate();
