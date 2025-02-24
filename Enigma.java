@@ -19,9 +19,8 @@ public class Enigma {
 
     public String encrypt(String message) {
         StringBuilder encryptedMessage = new StringBuilder();
-        
+
         for (char ch : message.toCharArray()) {
-            // Step through the rotors: inner -> middle -> outer
             int idx1 = rotors[0].indexOf(ch);
             if (idx1 == -1) {
                 encryptedMessage.append(ch);
@@ -33,19 +32,16 @@ public class Enigma {
             char finalChar = rotors[2].charAt(idx2);
 
             encryptedMessage.append(finalChar);
-
-            // Rotate the rotors after each letter
             rotate();
         }
-        
+
         return encryptedMessage.toString();
     }
 
     public String decrypt(String message) {
         StringBuilder decryptedMessage = new StringBuilder();
-        
+
         for (char ch : message.toCharArray()) {
-            // Reverse the steps: outer -> middle -> inner
             int idx2 = rotors[2].indexOf(ch);
             if (idx2 == -1) {
                 decryptedMessage.append(ch);
@@ -57,11 +53,9 @@ public class Enigma {
             char finalChar = rotors[0].charAt(idx1);
 
             decryptedMessage.append(finalChar);
-
-            // Rotate the rotors after each letter
             rotate();
         }
-        
+
         return decryptedMessage.toString();
     }
 
