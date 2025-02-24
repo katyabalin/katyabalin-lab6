@@ -35,14 +35,14 @@ public class Enigma {
         for (char c : message.toCharArray()) {
             char original = c;
 
-            // Pass character through the rotors in sequence: inner → middle → outer
-            int index = rotors[0].indexOf(c); // Get index in the inner rotor
-            char step1 = rotors[1].charAt(index); // Find mapped character in the middle rotor
-            int index2 = rotors[1].indexOf(step1); // Find its index in the middle rotor
-            char step2 = rotors[2].charAt(index2); // Find final mapped character in outer rotor
+            // Encrypt character through the rotors in sequence: inner → middle → outer
+            int index1 = rotors[0].indexOf(c);
+            char step1 = rotors[1].charAt(index1);
+            int index2 = rotors[1].indexOf(step1);
+            char step2 = rotors[2].charAt(index2);
 
             encryptedMessage.append(step2);
-            rotate(); // Rotate after each character
+            rotate(); // Rotate AFTER encryption
 
             // Debugging output:
             System.out.println("Encrypting '" + original + "' → '" + step2 + "'");
@@ -62,17 +62,17 @@ public class Enigma {
         for (char c : message.toCharArray()) {
             char original = c;
 
-            // Pass character through rotors in REVERSE order: outer → middle → inner
-            int index = rotors[2].indexOf(c); // Get index in the outer rotor
-            char step1 = rotors[1].charAt(index); // Find mapped character in the middle rotor
-            int index2 = rotors[1].indexOf(step1); // Find its index in the middle rotor
-            char step2 = rotors[0].charAt(index2); // Find final mapped character in inner rotor
+            // Decrypt through rotors in reverse order: outer → middle → inner
+            int index2 = rotors[2].indexOf(c);
+            char step2 = rotors[1].charAt(index2);
+            int index1 = rotors[1].indexOf(step2);
+            char step1 = rotors[0].charAt(index1);
 
-            decryptedMessage.append(step2);
-            rotate(); // Rotate after each character
+            decryptedMessage.append(step1);
+            rotate(); // Rotate AFTER decryption
 
             // Debugging output:
-            System.out.println("Decrypting '" + original + "' → '" + step2 + "'");
+            System.out.println("Decrypting '" + original + "' → '" + step1 + "'");
         }
 
         return decryptedMessage.toString();
