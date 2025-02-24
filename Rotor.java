@@ -17,8 +17,8 @@ public class Rotor {
 
     public int indexOf(char c) {
         int index = rotorValues.indexOf(c);
-        if (index == -1) return -1; // Prevent errors if character not found
-        return (index + position) % rotorValues.length();
+        if (index == -1) return -1; 
+        return (index - position + rotorValues.length()) % rotorValues.length();
     }
 
     public char charAt(int idx) {
