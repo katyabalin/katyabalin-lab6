@@ -1,4 +1,4 @@
-public class Enigma{
+public class Enigma {
 
     private String rotorInit[] = {"#GNUAHOVBIPWCJQXDKRYELSZFMT",
         "#EJOTYCHMRWAFKPUZDINSXBGLQV",
