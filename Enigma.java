@@ -25,7 +25,7 @@ public class Enigma {
             int num2 = rotors[1].indexOf(topRotorDraft1);
             char topRotorFinal = rotors[2].charAt(num2);
 
-            rotateRotors();
+            rotate();
 
             holding[i] = topRotorFinal;
         }
@@ -43,7 +43,7 @@ public class Enigma {
             int num2 = rotors[1].indexOf(middleRotorDraft);
             char finalChar = rotors[0].charAt(num2);
 
-            rotateRotors();
+            rotate();
 
             holding[i] = finalChar;
         }
@@ -51,7 +51,7 @@ public class Enigma {
         return new String(holding);
     }
 
-    private void rotateRotors() {
+    private void rotate() {
         if (rotors[0].rotate()) {
             if (rotors[1].rotate()) {
                 rotors[2].rotate();
