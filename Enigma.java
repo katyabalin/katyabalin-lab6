@@ -23,8 +23,9 @@ public class Enigma {
 
         for (char c : message.toCharArray()) {
             int index1 = rotors[0].indexOf(c);
-            char step1 = rotors[1].charAt(index1);
+            if (index1 == -1) continue; // Ignore unknown characters
 
+            char step1 = rotors[1].charAt(index1);
             int index2 = rotors[1].indexOf(step1);
             char step2 = rotors[2].charAt(index2);
 
@@ -40,8 +41,9 @@ public class Enigma {
 
         for (char c : message.toCharArray()) {
             int index2 = rotors[2].indexOf(c);
-            char step2 = rotors[1].charAt(index2);
+            if (index2 == -1) continue; // Ignore unknown characters
 
+            char step2 = rotors[1].charAt(index2);
             int index1 = rotors[1].indexOf(step2);
             char step1 = rotors[0].charAt(index1);
 
