@@ -1,5 +1,5 @@
 public class Rotor {
-    
+
     private String rotorValues;
     private int position;
 
@@ -10,7 +10,7 @@ public class Rotor {
      */
     public Rotor(String v, char c) {
         this.rotorValues = v;
-        this.position = v.indexOf(c); // Set initial position to where 'c' appears in the rotor
+        this.position = rotorValues.indexOf(c); // Set initial position based on start character
     }
 
     /**
@@ -19,7 +19,7 @@ public class Rotor {
      */
     public boolean rotate() {
         position = (position + 1) % rotorValues.length();
-        return position == 0; // Returns true if full rotation happens (for cascading effect).
+        return position == 0; // Returns true if full rotation happens
     }
 
     /**
@@ -45,9 +45,10 @@ public class Rotor {
     }
 
     /**
-     * Prints the current rotor state (for debugging).
+     * Prints the current rotor state for debugging.
      */
     public void printRotorState() {
         System.out.println("Rotor Position: " + position + " | Current Char: " + rotorValues.charAt(position));
     }
 }
+
