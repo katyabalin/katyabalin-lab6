@@ -49,10 +49,16 @@ public class Enigma {
     }
 
     private void rotate() {
+        System.out.println("Before Rotation:");
+        for (Rotor r : rotors) r.printRotorState();
+
         if (rotors[0].rotate()) {
             if (rotors[1].rotate()) {
                 rotors[2].rotate();
             }
         }
+
+        System.out.println("After Rotation:");
+        for (Rotor r : rotors) r.printRotorState();
     }
 }
