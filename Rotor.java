@@ -1,31 +1,53 @@
 public class Rotor {
     private String rotorValues;
-    private int position;
+    private int position; // Current rotor position
 
-    public Rotor(String v, char c) {
-        this.rotorValues = v;
-        this.position = rotorValues.indexOf(c);
+    public Rotor(String mapping, char startPosition) {
+        this.rotorValues = mapping;
+        this.position = rotorValues.indexOf(startPosition);
     }
 
-    /** Rotates rotor by one step */
+    /**
+     * Rotates the rotor by one position.
+     * @return true if a full cycle is completed (i.e., it returns to the original position)
+     */
     public boolean rotate() {
         position = (position + 1) % rotorValues.length();
-        return position == 0;  // Full rotation
+        boolean fullRotation = (position == 0);
+        System.out.println("Rotor rotated: New position " + rotorValues.charAt(position) + " | Full rotation: " + fullRotation);
+        return fullRotation;
     }
 
-    /** Returns the adjusted index of a given character */
+    /**
+     * Finds the index of a character in the rotor, adjusted for the rotor's current position.
+     * @param c Character to look up.
+     * @return Adjusted index within the rotor.
+     */
     public int indexOf(char c) {
         int originalIndex = rotorValues.indexOf(c);
         if (originalIndex == -1) return -1;  // Character not found
-        return (originalIndex - position + rotorValues.length()) % rotorValues.length();
+        int adjustedIndex = (originalIndex - position + rotorValues.length()) % rotorValues.length();
+        
+        System.out.println("indexOf: " + c + " is at " + originalIndex + ", adjusted for rotation: " + adjustedIndex);
+        return adjustedIndex;
     }
 
-    /** Returns the character at a given index */
+    /**
+     * Retrieves the character at the given adjusted index, considering the rotor's current position.
+     * @param idx Index within the rotor.
+     * @return Mapped character.
+     */
     public char charAt(int idx) {
-        return rotorValues.charAt((idx + position) % rotorValues.length());
+        int adjustedIndex = (idx + position) % rotorValues.length();
+        char mappedChar = rotorValues.charAt(adjustedIndex);
+        
+        System.out.println("charAt: Index " + idx + " maps to " + mappedChar);
+        return mappedChar;
     }
 
-    /** Debugging function */
+    /**
+     * Prints the current rotor position for debugging.
+     */
     public void printRotorState() {
         System.out.println("Rotor Position: " + position + " | Current Char: " + rotorValues.charAt(position));
     }
