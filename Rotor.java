@@ -7,21 +7,26 @@ public class Rotor {
         this.position = rotorValues.indexOf(c);
     }
 
-    /** Rotate rotor by one step */
+    /** Rotates rotor by one step */
     public boolean rotate() {
         position = (position + 1) % rotorValues.length();
-        return (position == 0);  // Full rotation
+        return position == 0;  // Full rotation
     }
 
     /** Returns the adjusted index of a given character */
     public int indexOf(char c) {
         int originalIndex = rotorValues.indexOf(c);
-        if (originalIndex == -1) return -1;
+        if (originalIndex == -1) return -1;  // Character not found
         return (originalIndex - position + rotorValues.length()) % rotorValues.length();
     }
 
-    /** Returns the character at a given index, considering rotation */
+    /** Returns the character at a given index */
     public char charAt(int idx) {
         return rotorValues.charAt((idx + position) % rotorValues.length());
+    }
+
+    /** Debugging function */
+    public void printRotorState() {
+        System.out.println("Rotor Position: " + position + " | Current Char: " + rotorValues.charAt(position));
     }
 }
