@@ -3,7 +3,7 @@ public class Rotor {
     private char startChar;
 
     public Rotor(String v, char c) {
-        this.rotorValues = new String(v);
+        this.rotorValues = v;
         this.startChar = c;
 
         while (!this.rotate());
@@ -14,7 +14,7 @@ public class Rotor {
         if (charAt(0) == startChar) {
             temp = true;
         }
-        rotorValues = rotorValues.substring(1) + rotorValues.charAt(0);
+        this.rotorValues = rotorValues.substring(rotorValues.length() - 1) + rotorValues.substring(0, rotorValues.length() - 1);
         return temp;
     }
 
