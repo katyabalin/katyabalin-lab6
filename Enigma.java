@@ -8,9 +8,6 @@ public class Enigma {
         "#TGOWHLIFMCSZYRVXQABUPEJKND"
     };
 
-
-    
-
     private Rotor rotors[];
 
     public Enigma(int id1, int id2, int id3, String start) {
@@ -48,6 +45,7 @@ public class Enigma {
             char char1 = rotors[1].charAt(idx2);
             int idx1 = rotors[1].indexOf(char1);
             char finalChar = rotors[0].charAt(idx1);
+            
             decryptedMessage.append(finalChar);
             
             // Rotate the rotors after each letter
