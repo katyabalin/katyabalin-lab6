@@ -1,10 +1,10 @@
 public class Rotor {
-    
+
     private String rotorValues;
-    private int position; // Tracks the rotor's current position
+    private int position; // Tracks the rotor's position within `rotorValues`
     
     public Rotor(String v, char c) {
-        this.rotorValues = v; // Store the rotor mapping
+        this.rotorValues = v; 
         this.position = v.indexOf(c); // Find the starting position
         
         // Rotate the rotor until it reaches the correct starting character
@@ -17,9 +17,7 @@ public class Rotor {
      */
     public boolean rotate() {
         position = (position + 1) % rotorValues.length();
-        boolean fullRotation = (position == 0);
-        System.out.println("[Rotor Rotation] New Position: " + position + " (" + rotorValues.charAt(position) + ")");
-        return fullRotation;
+        return position == 0; // Return true if full rotation is completed
     }
 
     /**
@@ -31,11 +29,7 @@ public class Rotor {
         int originalIndex = rotorValues.indexOf(c);
         if (originalIndex == -1) return -1; // Character not found
         
-        // Adjust index to consider the rotor's current position
-        int adjustedIndex = (originalIndex - position + rotorValues.length()) % rotorValues.length();
-        
-        System.out.println("[IndexOf] Character: " + c + " | Original Index: " + originalIndex + " | Adjusted Index: " + adjustedIndex);
-        return adjustedIndex;
+        return (originalIndex - position + rotorValues.length()) % rotorValues.length();
     }
 
     /**
@@ -45,9 +39,13 @@ public class Rotor {
      */
     public char charAt(int idx) {
         int adjustedIndex = (idx + position) % rotorValues.length();
-        char mappedChar = rotorValues.charAt(adjustedIndex);
-        
-        System.out.println("[CharAt] Input Index: " + idx + " | Mapped Char: " + mappedChar);
-        return mappedChar;
+        return rotorValues.charAt(adjustedIndex);
+    }
+
+    /**
+     * Prints the current state of the rotor for debugging.
+     */
+    public void printRotorState() {
+        System.out.println("Rotor Position: " + position + " | Current Char: " + rotorValues.charAt(position));
     }
 }
