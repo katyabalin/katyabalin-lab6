@@ -35,11 +35,13 @@ public class Enigma {
         for (char c : message.toCharArray()) {
             char original = c;
 
-            // Encrypt character through the rotors in sequence: inner → middle → outer
-            int index1 = rotors[0].indexOf(c);  // Find character index in inner rotor
-            char step1 = rotors[1].charAt(index1); // Map character through middle rotor
-            int index2 = rotors[1].indexOf(step1); // Get index in middle rotor
-            char step2 = rotors[2].charAt(index2); // Map through outer rotor
+            // Step 1: Find character in inner rotor and map it through middle rotor
+            int index1 = rotors[0].indexOf(c);
+            char step1 = rotors[1].charAt(index1);
+
+            // Step 2: Find mapped character in middle rotor and map it through outer rotor
+            int index2 = rotors[1].indexOf(step1);
+            char step2 = rotors[2].charAt(index2);
 
             encryptedMessage.append(step2);
             rotate(); // Rotate AFTER encryption
@@ -62,11 +64,13 @@ public class Enigma {
         for (char c : message.toCharArray()) {
             char original = c;
 
-            // Decrypt through rotors in reverse order: outer → middle → inner
-            int index2 = rotors[2].indexOf(c);  // Find character index in outer rotor
-            char step2 = rotors[1].charAt(index2); // Map character through middle rotor
-            int index1 = rotors[1].indexOf(step2); // Get index in middle rotor
-            char step1 = rotors[0].charAt(index1); // Map back through inner rotor
+            // Step 1: Find character in outer rotor and map it back through middle rotor
+            int index2 = rotors[2].indexOf(c);
+            char step2 = rotors[1].charAt(index2);
+
+            // Step 2: Find mapped character in middle rotor and map it back through inner rotor
+            int index1 = rotors[1].indexOf(step2);
+            char step1 = rotors[0].charAt(index1);
 
             decryptedMessage.append(step1);
             rotate(); // Rotate AFTER decryption
