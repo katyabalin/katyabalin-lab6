@@ -1,28 +1,31 @@
 public class Rotor {
 
     private String rotorValues;
-    private char startChar;
     private int currentPosition;
+    private int startPosition;
 
-    public Rotor(String v, char c){
+    public Rotor(String v, char c) {
         this.rotorValues = v;
-        this.startChar = c;
-        this.currentPosition = rotorValues.indexOf(c);
+        this.startPosition = v.indexOf(c);
+        this.currentPosition = this.startPosition;
+
+        System.out.println("🚀 Rotor Initialized: " + rotorValues + " Start Position: " + c + " (Index: " + this.startPosition + ")");
     }
 
-    // Rotate the rotor one position clockwise
-    public boolean rotate(){
+    public boolean rotate() {
         currentPosition = (currentPosition + 1) % rotorValues.length();
-        return rotorValues.charAt(currentPosition) == startChar;
+        boolean completedCycle = (currentPosition == startPosition); // Returns true if full cycle completed
+        System.out.println("🔄 Rotor Stepped to Position: " + currentPosition + " (Completed Cycle: " + completedCycle + ")");
+        return completedCycle;
     }
 
-    // Get the index of a given character in the rotor
-    public int indexOf(char c){
-        return rotorValues.indexOf(c);
+    public int indexOf(char c) {
+        int originalIndex = rotorValues.indexOf(c);
+        if (originalIndex == -1) return -1;
+        return (originalIndex - currentPosition + rotorValues.length()) % rotorValues.length();
     }
 
-    // Get the character at a specific index in the rotor
-    public char charAt(int idx){
+    public char charAt(int idx) {
         return rotorValues.charAt((idx + currentPosition) % rotorValues.length());
     }
 }
