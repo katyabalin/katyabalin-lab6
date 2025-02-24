@@ -1,6 +1,6 @@
 public class Enigma {
 
-    private final String[] rotorInit = {
+    private String rotorInit[] = {
         "#GNUAHOVBIPWCJQXDKRYELSZFMT",
         "#EJOTYCHMRWAFKPUZDINSXBGLQV",
         "#BDFHJLNPRTVXZACEGIKMOQSUWY",
@@ -8,7 +8,7 @@ public class Enigma {
         "#TGOWHLIFMCSZYRVXQABUPEJKND"
     };
 
-    private Rotor[] rotors;
+    private Rotor rotors[];
 
     public Enigma(int id1, int id2, int id3, String start) {
         rotors = new Rotor[3];
@@ -17,43 +17,44 @@ public class Enigma {
         rotors[2] = new Rotor(rotorInit[id3 - 1], start.charAt(2));
     }
 
-    /** Encrypts the given message */
     public String encrypt(String message) {
-        StringBuilder result = new StringBuilder();
-
-        for (char c : message.toCharArray()) {
-            int index1 = rotors[0].indexOf(c);
-            if (index1 == -1) continue; // Ignore unknown characters
-
-            char step1 = rotors[1].charAt(index1);
-            int index2 = rotors[1].indexOf(step1);
-            char step2 = rotors[2].charAt(index2);
-
-            result.append(step2);
+        StringBuilder encryptedMessage = new StringBuilder();
+        
+        for (char ch : message.toCharArray()) {
+            // Step through the rotors: inner -> middle -> outer
+            int idx1 = rotors[0].indexOf(ch);
+            char char2 = rotors[1].charAt(idx1);
+            int idx2 = rotors[1].indexOf(char2);
+            char finalChar = rotors[2].charAt(idx2);
+            
+            encryptedMessage.append(finalChar);
+            
+            // Rotate the rotors after each letter
             rotate();
         }
-        return result.toString();
+        
+        return encryptedMessage.toString();
     }
 
-    /** Decrypts the given message */
     public String decrypt(String message) {
-        StringBuilder result = new StringBuilder();
-
-        for (char c : message.toCharArray()) {
-            int index2 = rotors[2].indexOf(c);
-            if (index2 == -1) continue; // Ignore unknown characters
-
-            char step2 = rotors[1].charAt(index2);
-            int index1 = rotors[1].indexOf(step2);
-            char step1 = rotors[0].charAt(index1);
-
-            result.append(step1);
+        StringBuilder decryptedMessage = new StringBuilder();
+        
+        for (char ch : message.toCharArray()) {
+            // Reverse the steps: outer -> middle -> inner
+            int idx2 = rotors[2].indexOf(ch);
+            char char1 = rotors[1].charAt(idx2);
+            int idx1 = rotors[1].indexOf(char1);
+            char finalChar = rotors[0].charAt(idx1);
+            
+            decryptedMessage.append(finalChar);
+            
+            // Rotate the rotors after each letter
             rotate();
         }
-        return result.toString();
+        
+        return decryptedMessage.toString();
     }
 
-    /** Rotates the rotors */
     private void rotate() {
         if (rotors[0].rotate()) {
             if (rotors[1].rotate()) {
