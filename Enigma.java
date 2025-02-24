@@ -35,17 +35,17 @@ public class Enigma {
         for (char c : message.toCharArray()) {
             char original = c;
 
-            // Step through rotors in sequence (inner → middle → outer)
-            for (Rotor rotor : rotors) {
-                int index = rotor.indexOf(c);  // Find the index of 'c' in current rotor
-                c = rotors[rotors.length - 1].charAt(index); // Get mapped character
-            }
+            // Pass character through the rotors in sequence: inner → middle → outer
+            int index = rotors[0].indexOf(c); // Get index in the inner rotor
+            char step1 = rotors[1].charAt(index); // Find mapped character in the middle rotor
+            int index2 = rotors[1].indexOf(step1); // Find its index in the middle rotor
+            char step2 = rotors[2].charAt(index2); // Find final mapped character in outer rotor
 
-            encryptedMessage.append(c);
+            encryptedMessage.append(step2);
             rotate(); // Rotate after each character
 
             // Debugging output:
-            System.out.println("Encrypting '" + original + "' → '" + c + "'");
+            System.out.println("Encrypting '" + original + "' → '" + step2 + "'");
         }
 
         return encryptedMessage.toString();
@@ -62,17 +62,17 @@ public class Enigma {
         for (char c : message.toCharArray()) {
             char original = c;
 
-            // Step through rotors in reverse order (outer → middle → inner)
-            for (int i = rotors.length - 1; i >= 0; i--) {
-                int index = rotors[i].indexOf(c); // Find the index in rotor
-                c = rotors[i].charAt(index);      // Get mapped character
-            }
+            // Pass character through rotors in REVERSE order: outer → middle → inner
+            int index = rotors[2].indexOf(c); // Get index in the outer rotor
+            char step1 = rotors[1].charAt(index); // Find mapped character in the middle rotor
+            int index2 = rotors[1].indexOf(step1); // Find its index in the middle rotor
+            char step2 = rotors[0].charAt(index2); // Find final mapped character in inner rotor
 
-            decryptedMessage.append(c);
+            decryptedMessage.append(step2);
             rotate(); // Rotate after each character
 
             // Debugging output:
-            System.out.println("Decrypting '" + original + "' → '" + c + "'");
+            System.out.println("Decrypting '" + original + "' → '" + step2 + "'");
         }
 
         return decryptedMessage.toString();
@@ -82,9 +82,9 @@ public class Enigma {
      * Rotates the rotors like an odometer.
      */
     private void rotate() {
-        if (rotors[0].rotate()) {
-            if (rotors[1].rotate()) {
-                rotors[2].rotate();
+        if (rotors[0].rotate()) { // If the inner rotor completes a full cycle
+            if (rotors[1].rotate()) { // If the middle rotor also completes a full cycle
+                rotors[2].rotate(); // Rotate the outer rotor
             }
         }
     }
