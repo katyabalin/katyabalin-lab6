@@ -89,7 +89,7 @@ public class Enigma {
      */
     public void printRotorState() {
         for (Rotor r : rotors) {
-            System.out.println("Rotor Position: " + r);
+            r.printRotorState();
         }
     }
 }
