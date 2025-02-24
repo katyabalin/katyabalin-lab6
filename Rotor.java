@@ -21,6 +21,7 @@ public class Rotor {
 
     public int indexOf(char c){
         int index = rotorValues.indexOf(c);
+        if (index == -1) return -1;
         return (index - position + rotorValues.length()) % rotorValues.length();
     }
 
