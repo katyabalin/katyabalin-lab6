@@ -38,4 +38,54 @@ public class Enigma {
             int index2 = rotors[1].indexOf(step1);
             char step2 = rotors[2].charAt(index2);
 
-            System.out.println("Step 1: " + c + " -> "
+            System.out.println("Step 1: " + c + " -> " + step1 + " (Index: " + index1 + ")");
+            System.out.println("Step 2: " + step1 + " -> " + step2 + " (Index: " + index2 + ")");
+
+            result.append(step2);
+            rotate();
+        }
+
+        System.out.println("\n[Encryption Complete] Output: " + result.toString());
+        return result.toString();
+    }
+
+    /** Decrypts the given message */
+    public String decrypt(String message) {
+        System.out.println("\n[Decrypting Message] Input: " + message);
+        StringBuilder result = new StringBuilder();
+
+        for (char c : message.toCharArray()) {
+            System.out.println("\nDecrypting: " + c);
+
+            int index2 = rotors[2].indexOf(c);
+            char step2 = rotors[1].charAt(index2);
+
+            int index1 = rotors[1].indexOf(step2);
+            char step1 = rotors[0].charAt(index1);
+
+            System.out.println("Step 1: " + c + " -> " + step2 + " (Index: " + index2 + ")");
+            System.out.println("Step 2: " + step2 + " -> " + step1 + " (Index: " + index1 + ")");
+
+            result.append(step1);
+            rotate();
+        }
+
+        System.out.println("\n[Decryption Complete] Output: " + result.toString());
+        return result.toString();
+    }
+
+    /** Rotates the rotors */
+    private void rotate() {
+        System.out.println("\nBefore Rotation: " + rotors[0].charAt(0) + " " +
+            rotors[1].charAt(0) + " " + rotors[2].charAt(0));
+
+        if (rotors[0].rotate()) {
+            if (rotors[1].rotate()) {
+                rotors[2].rotate();
+            }
+        }
+
+        System.out.println("After Rotation: " + rotors[0].charAt(0) + " " +
+            rotors[1].charAt(0) + " " + rotors[2].charAt(0));
+    }
+}
