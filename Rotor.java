@@ -1,30 +1,47 @@
 public class Rotor {
-    private String rotorValues;
-    private int currentPosition;
-    private int startPosition;
-
-    public Rotor(String v, char c) {
-        this.rotorValues = v;
-        this.startPosition = v.indexOf(c);
-        this.currentPosition = this.startPosition;
-
-        System.out.println("🚀 Rotor Initialized: " + rotorValues + " Start Position: " + c + " (Index: " + this.startPosition + ")");
+    private String rotorConfig;
+    private final char initialPosition;
+    
+    public Rotor(String rotorConfig, char initialPosition) {
+        this.rotorConfig = rotorConfig;
+        this.initialPosition = initialPosition;
+        rotateTo(initialPosition);
     }
 
-    public boolean rotate() {
-        currentPosition = (currentPosition + 1) % rotorValues.length();
-        boolean completedCycle = (currentPosition == startPosition); // Returns true if full cycle completed
-        System.out.println("🔄 Rotor Stepped to Position: " + currentPosition + " (Completed Cycle: " + completedCycle + ")");
-        return completedCycle;
+    /**
+     * Rotates the rotor to its initial position.
+     */
+    private void rotateTo(char position) {
+        while (rotorConfig.charAt(0) != position) {
+            rotate();
+        }
     }
 
-    public int indexOf(char c) {
-        int index = rotorValues.indexOf(c);
-        if (index == -1) return -1; // If character is not found, return -1
-        return (index - currentPosition + rotorValues.length()) % rotorValues.length();
+    /**
+     * Rotates the rotor one step clockwise.
+     */
+    public void rotate() {
+        rotorConfig = rotorConfig.substring(1) + rotorConfig.charAt(0);
     }
 
-    public char charAt(int idx) {
-        return rotorValues.charAt((idx + currentPosition) % rotorValues.length());
+    /**
+     * Returns the index of a given character in the rotor.
+     */
+    public int getIndex(char c) {
+        return rotorConfig.indexOf(c);
+    }
+
+    /**
+     * Returns the character at a given index in the rotor.
+     */
+    public char getCharAt(int index) {
+        return rotorConfig.charAt(index);
+    }
+
+    /**
+     * Checks if the rotor has completed a full rotation.
+     */
+    public boolean hasCompletedFullRotation() {
+        return rotorConfig.charAt(0) == initialPosition;
     }
 }
