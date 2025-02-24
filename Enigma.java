@@ -4,11 +4,17 @@ import java.util.List;
 public class Enigma {
     private List<Rotor> rotors;
 
-    // Constructor initializes rotors based on provided IDs and start positions
+    /**
+     * Constructs an Enigma machine with three rotors.
+     * @param id1 Index of the inner rotor (1-5).
+     * @param id2 Index of the middle rotor (1-5).
+     * @param id3 Index of the outer rotor (1-5).
+     * @param startPositions The starting characters for the three rotors.
+     */
     public Enigma(int id1, int id2, int id3, String startPositions) {
         rotors = new ArrayList<>();
 
-        // Predefined rotor configurations
+        // Predefined rotor configurations (1-based index)
         String[] rotorConfigs = {
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ#",  // Rotor 1
             "EKMFLGDQVZNTOWYHXUSPAIBRCJ#",  // Rotor 2
@@ -17,34 +23,47 @@ public class Enigma {
             "ESOVPZJAYQUIRHXLNFTGKDCMWB#"   // Rotor 5
         };
 
-        // Initialize rotors with the selected configurations
+        // Initialize rotors with specified configurations and starting positions
         rotors.add(new Rotor(rotorConfigs[id1 - 1], startPositions.charAt(0))); // Inner rotor
         rotors.add(new Rotor(rotorConfigs[id2 - 1], startPositions.charAt(1))); // Middle rotor
         rotors.add(new Rotor(rotorConfigs[id3 - 1], startPositions.charAt(2))); // Outer rotor
     }
 
-    // Encrypt method
+    /**
+     * Encrypts the given input string.
+     * @param input The plaintext to encrypt.
+     * @return The encrypted string.
+     */
     public String encrypt(String input) {
         return process(input, true);
     }
 
-    // Decrypt method
+    /**
+     * Decrypts the given input string.
+     * @param input The ciphertext to decrypt.
+     * @return The decrypted string.
+     */
     public String decrypt(String input) {
         return process(input, false);
     }
 
-    // Processing logic for encryption and decryption
+    /**
+     * Processes input through rotors (either encryption or decryption).
+     * @param input The input text.
+     * @param encryptMode True for encryption, false for decryption.
+     * @return Transformed string.
+     */
     private String process(String input, boolean encryptMode) {
         StringBuilder result = new StringBuilder();
 
         for (char c : input.toCharArray()) {
             if (encryptMode) {
-                // Encrypting: Pass character through rotors from inner to outer
+                // Encrypt: Pass through rotors in sequence (inner → middle → outer)
                 for (Rotor rotor : rotors) {
                     c = rotor.charAt(rotor.indexOf(c));
                 }
             } else {
-                // Decrypting: Pass character through rotors in reverse order
+                // Decrypt: Pass through rotors in **reverse** sequence (outer → middle → inner)
                 for (int i = rotors.size() - 1; i >= 0; i--) {
                     c = rotors.get(i).charAt(rotors.get(i).indexOf(c));
                 }
@@ -52,12 +71,12 @@ public class Enigma {
 
             result.append(c);
 
-            // Rotate first rotor every time, cascade rotation like an odometer
+            // Rotate rotors (like an odometer)
             boolean fullRotation = rotors.get(0).rotate();
             if (fullRotation) {
                 fullRotation = rotors.get(1).rotate();
                 if (fullRotation) {
-                    rotors.get(2).rotate(); // Rotate outer rotor only if middle rotor completes a full cycle
+                    rotors.get(2).rotate();
                 }
             }
         }
@@ -65,10 +84,12 @@ public class Enigma {
         return result.toString();
     }
 
-    // Debug method to print rotor states
+    /**
+     * Prints the current rotor state (for debugging).
+     */
     public void printRotorState() {
         for (Rotor r : rotors) {
-            System.out.println("Rotor: " + r);
+            System.out.println("Rotor Position: " + r);
         }
     }
 }
