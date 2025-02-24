@@ -11,17 +11,17 @@ public class Rotor {
     // Rotate the rotor one position clockwise
     public boolean rotate(){
         currentPosition = (currentPosition + 1) % rotorValues.length();
-        return currentPosition == 0;  // Return true if back to starting position
+        return currentPosition == 0;  // Returns true if the rotor completes a full cycle
     }
 
-    // Get the index of a given character in the rotor
+    // Find the current index of a given character within the rotor, accounting for shifts
     public int indexOf(char c){
         int index = rotorValues.indexOf(c);
         if (index == -1) return -1;
         return (index - currentPosition + rotorValues.length()) % rotorValues.length();
     }
 
-    // Get the character at a specific index in the rotor
+    // Get the character at a specific index in the rotor, considering rotation shifts
     public char charAt(int idx){
         return rotorValues.charAt((idx + currentPosition) % rotorValues.length());
     }
