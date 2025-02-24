@@ -1,5 +1,4 @@
 public class Rotor {
-
     private String rotorValues;
     private int currentPosition;
 
@@ -10,13 +9,13 @@ public class Rotor {
 
     public boolean rotate() {
         currentPosition = (currentPosition + 1) % rotorValues.length();
-        return currentPosition == 0; // Returns true if it completes a full cycle
+        return currentPosition == 0; // Returns true if full cycle completed
     }
 
     public int indexOf(char c) {
-        int index = rotorValues.indexOf(c);
-        if (index == -1) return -1;
-        return (index - currentPosition + rotorValues.length()) % rotorValues.length();
+        int trueIndex = rotorValues.indexOf(c);
+        if (trueIndex == -1) return -1;
+        return (trueIndex - currentPosition + rotorValues.length()) % rotorValues.length();
     }
 
     public char charAt(int idx) {
