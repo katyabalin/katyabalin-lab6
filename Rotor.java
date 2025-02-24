@@ -1,5 +1,4 @@
 public class Rotor {
-
     private String rotorValues;
     private int currentPosition;
     private int startPosition;
@@ -21,7 +20,7 @@ public class Rotor {
 
     public int indexOf(char c) {
         int originalIndex = rotorValues.indexOf(c);
-        if (originalIndex == -1) return -1;
+        if (originalIndex == -1) return -1; // If character is not found, return -1
         return (originalIndex - currentPosition + rotorValues.length()) % rotorValues.length();
     }
 
