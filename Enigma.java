@@ -1,67 +1,64 @@
-import java.util.Arrays;
-
 public class Enigma {
-    private Rotor[] rotors;
 
-    public Enigma(String rotor1, String rotor2, String rotor3, char start1, char start2, char start3) {
-        rotors = new Rotor[]{
-            new Rotor(rotor1, start1),
-            new Rotor(rotor2, start2),
-            new Rotor(rotor3, start3)
-        };
+    private String rotorInit[] = {
+        "#GNUAHOVBIPWCJQXDKRYELSZFMT",
+        "#EJOTYCHMRWAFKPUZDINSXBGLQV",
+        "#BDFHJLNPRTVXZACEGIKMOQSUWY",
+        "#NWDKHGXZVRIFJBLMAOPSCYUTQE",
+        "#TGOWHLIFMCSZYRVXQABUPEJKND"
+    };
+
+    private Rotor rotors[];
+
+    public Enigma(int id1, int id2, int id3, String start) {
+        rotors = new Rotor[3];
+        rotors[0] = new Rotor(rotorInit[id1 - 1], start.charAt(0));
+        rotors[1] = new Rotor(rotorInit[id2 - 1], start.charAt(1));
+        rotors[2] = new Rotor(rotorInit[id3 - 1], start.charAt(2));
     }
 
     public String encrypt(String message) {
         StringBuilder encryptedMessage = new StringBuilder();
-        for (char c : message.toCharArray()) {
-            System.out.println("\n🔹 Encrypting '" + c + "'");
-
-            int index = rotors[0].indexOf(c);
-            System.out.println("  🌀 Step 1: Inner rotor mapped '" + c + "' → index [" + index + "]");
-
-            char step1 = rotors[1].charAt(index);
-            System.out.println("  🌀 Step 2: Middle rotor mapped index [" + index + "] → '" + step1 + "'");
-
-            int index2 = rotors[1].indexOf(step1);
-            System.out.println("  🌀 Step 3: Outer rotor mapped '" + step1 + "' → index [" + index2 + "]");
-
-            char step2 = rotors[2].charAt(index2);
-            System.out.println("  🌀 Final Encryption: '" + step1 + "' → '" + step2 + "'");
-
-            encryptedMessage.append(step2);
+        
+        for (char ch : message.toCharArray()) {
+            // Step through the rotors: inner -> middle -> outer
+            int idx1 = rotors[0].indexOf(ch);
+            char char2 = rotors[1].charAt(idx1);
+            int idx2 = rotors[1].indexOf(char2);
+            char finalChar = rotors[2].charAt(idx2);
+            
+            encryptedMessage.append(finalChar);
+            
+            // Rotate the rotors after each letter
             rotate();
         }
+        
         return encryptedMessage.toString();
     }
 
     public String decrypt(String message) {
         StringBuilder decryptedMessage = new StringBuilder();
-        for (char c : message.toCharArray()) {
-            System.out.println("\n🔹 Decrypting '" + c + "'");
-
-            int index2 = rotors[2].indexOf(c);
-            System.out.println("  🔄 Step 1: Outer rotor mapped '" + c + "' → index [" + index2 + "]");
-
-            char step2 = rotors[1].charAt(index2);
-            System.out.println("  🔄 Step 2: Middle rotor mapped index [" + index2 + "] → '" + step2 + "'");
-
-            int index1 = rotors[1].indexOf(step2);
-            System.out.println("  🔄 Step 3: Inner rotor mapped '" + step2 + "' → index [" + index1 + "]");
-
-            char step1 = rotors[0].charAt(index1);
-            System.out.println("  🔄 Final Decryption: '" + step2 + "' → '" + step1 + "'");
-
-            decryptedMessage.append(step1);
+        
+        for (char ch : message.toCharArray()) {
+            // Reverse the steps: outer -> middle -> inner
+            int idx2 = rotors[2].indexOf(ch);
+            char char1 = rotors[1].charAt(idx2);
+            int idx1 = rotors[1].indexOf(char1);
+            char finalChar = rotors[0].charAt(idx1);
+            
+            decryptedMessage.append(finalChar);
+            
+            // Rotate the rotors after each letter
             rotate();
         }
+        
         return decryptedMessage.toString();
     }
 
     private void rotate() {
-        System.out.println("\n🔄 Rotating rotors...");
-        if (rotors[0].rotate()) { // If inner rotor completes full cycle
-            if (rotors[1].rotate()) { // If middle rotor completes full cycle
-                rotors[2].rotate(); // Rotate the outer rotor
+        if (rotors[0].rotate()) {
+            if (rotors[1].rotate()) {
+                rotors[2].rotate();
             }
         }
     }
