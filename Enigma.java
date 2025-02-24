@@ -16,33 +16,39 @@ public class Enigma {
     }
 
     public String encrypt(String message) {
-        StringBuilder encryptedMessage = new StringBuilder();
+        char[] holding = new char[message.length()];
 
-        for (char c : message.toCharArray()) {
-            int index = rotors[0].indexOf(c);
-            char middleChar = rotors[1].charAt(index);
-            index = rotors[1].indexOf(middleChar);
-            char encryptedChar = rotors[2].charAt(index);
+        for (int i = 0; i < message.length(); i++) { 
+            int num1 = rotors[0].indexOf(message.charAt(i));
+            char topRotorDraft1 = rotors[2].charAt(num1);
 
-            encryptedMessage.append(encryptedChar);
+            int num2 = rotors[1].indexOf(topRotorDraft1);
+            char topRotorFinal = rotors[2].charAt(num2);
+
             rotateRotors();
+
+            holding[i] = topRotorFinal;
         }
-        return encryptedMessage.toString();
+
+        return new String(holding);
     }
 
     public String decrypt(String message) {
-        StringBuilder decryptedMessage = new StringBuilder();
+        char[] holding = new char[message.length()];
 
-        for (char c : message.toCharArray()) {
-            int index = rotors[2].indexOf(c);
-            char middleChar = rotors[1].charAt(index);
-            index = rotors[1].indexOf(middleChar);
-            char decryptedChar = rotors[0].charAt(index);
+        for (int i = 0; i < message.length(); i++) { 
+            int num1 = rotors[2].indexOf(message.charAt(i));
+            char middleRotorDraft = rotors[1].charAt(num1);
 
-            decryptedMessage.append(decryptedChar);
+            int num2 = rotors[1].indexOf(middleRotorDraft);
+            char finalChar = rotors[0].charAt(num2);
+
             rotateRotors();
+
+            holding[i] = finalChar;
         }
-        return decryptedMessage.toString();
+
+        return new String(holding);
     }
 
     private void rotateRotors() {
