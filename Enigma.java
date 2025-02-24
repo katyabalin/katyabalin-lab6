@@ -21,9 +21,16 @@ public class Enigma {
         StringBuilder encryptedMessage = new StringBuilder();
 
         for (char ch : message.toCharArray()) {
+            if (ch == '#') {
+                encryptedMessage.append('#');  // Keep '#' as is
+                rotate();
+                continue;
+            }
+
             int idx1 = rotors[0].indexOf(ch);
             if (idx1 == -1) {
                 encryptedMessage.append(ch);
+                rotate();
                 continue;
             }
 
@@ -42,9 +49,16 @@ public class Enigma {
         StringBuilder decryptedMessage = new StringBuilder();
 
         for (char ch : message.toCharArray()) {
+            if (ch == '#') {
+                decryptedMessage.append('#');  // Keep '#' as is
+                rotate();
+                continue;
+            }
+
             int idx2 = rotors[2].indexOf(ch);
             if (idx2 == -1) {
                 decryptedMessage.append(ch);
+                rotate();
                 continue;
             }
 
