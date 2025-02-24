@@ -1,31 +1,44 @@
 public class Rotor {
 
-    private String rotorValues;
-    private char startChar;
-    private int position;
-        
-    public Rotor(String v, char c){
-        this.rotorValues = new String(v);
+    private String rotorValues;  // The rotor character sequence
+    private char startChar;  // The initial starting character
+    private int position;  // Current rotation position
+
+    public Rotor(String v, char c) {
+        this.rotorValues = v;
         this.startChar = c;
         this.position = rotorValues.indexOf(startChar);
     }
 
-    public boolean rotate(){
+    /**
+     * Rotates the rotor one step clockwise.
+     * Returns true if the rotor completes a full cycle back to the start position.
+     */
+    public boolean rotate() {
         position = (position + 1) % rotorValues.length();
         return rotorValues.charAt(position) == startChar;
     }
 
-    public int indexOf(char c){
-        int index = rotorValues.indexOf(c);
-        if (index == -1) return -1;  // Handle case where character is not found
-        return (index - position + rotorValues.length()) % rotorValues.length();
+    /**
+     * Finds the index of a given character in the rotated rotor.
+     * This ensures the lookup is adjusted for the rotor’s rotation.
+     */
+    public int indexOf(char c) {
+        int actualIndex = rotorValues.indexOf(c);
+        if (actualIndex == -1) return -1;  // Character not found
+        return (actualIndex - position + rotorValues.length()) % rotorValues.length();
     }
 
-    public char charAt(int idx){
+    /**
+     * Returns the character at a given index, considering the rotor's rotation.
+     */
+    public char charAt(int idx) {
         return rotorValues.charAt((idx + position) % rotorValues.length());
     }
 
-    // ✅ Fix: Added this method to get the current top character
+    /**
+     * Returns the character currently on top of the rotor.
+     */
     public char currentChar() {
         return rotorValues.charAt(position);
     }
