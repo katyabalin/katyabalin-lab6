@@ -1,8 +1,8 @@
 public class Rotor {
 
-    private String rotorValues;
-    private char startChar;
-    private int position;
+    private String rotorValues;  // The rotor character sequence
+    private char startChar;  // The initial starting character
+    private int position;  // Current rotation position
 
     public Rotor(String v, char c) {
         this.rotorValues = v;
@@ -20,12 +20,12 @@ public class Rotor {
     }
 
     /**
-     * Finds the index of a given character in the rotor, adjusted for rotation.
+     * Finds the index of a given character in the rotated rotor.
      */
     public int indexOf(char c) {
-        int originalIndex = rotorValues.indexOf(c);
-        if (originalIndex == -1) return -1;  // Character not found
-        return (originalIndex - position + rotorValues.length()) % rotorValues.length();
+        int adjustedIndex = rotorValues.indexOf(c);
+        if (adjustedIndex == -1) return -1;
+        return (adjustedIndex - position + rotorValues.length()) % rotorValues.length();
     }
 
     /**
