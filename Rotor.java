@@ -1,5 +1,4 @@
 public class Rotor {
-
     private String rotorValues;
     private char startChar;
 
@@ -11,8 +10,12 @@ public class Rotor {
     }
 
     public boolean rotate() {
+        boolean temp = false;
+        if (charAt(0) == startChar) {
+            temp = true;
+        }
         rotorValues = rotorValues.substring(1) + rotorValues.charAt(0);
-        return rotorValues.charAt(0) == startChar;
+        return temp;
     }
 
     public int indexOf(char c) {
