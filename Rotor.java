@@ -1,25 +1,28 @@
 public class Rotor {
-    private String mapping;
-    private int offset;
 
-    public Rotor(String mapping, char start) {
-        this.mapping = mapping;
-        this.offset = mapping.indexOf(start);
+    private String rotorValues;
+    private char startChar;
+    private int currentPosition;
+
+    public Rotor(String v, char c){
+        this.rotorValues = v;
+        this.startChar = c;
+        this.currentPosition = rotorValues.indexOf(c);
     }
 
-    public int indexOf(char c) {
-        int index = mapping.indexOf(c);
-        return (index == -1) ? 0 : (index + offset) % mapping.length();
+    // Rotate the rotor one position clockwise
+    public boolean rotate(){
+        currentPosition = (currentPosition + 1) % rotorValues.length();
+        return rotorValues.charAt(currentPosition) == startChar;
     }
 
-    public char charAt(int index) {
-        return mapping.charAt((index - offset + mapping.length()) % mapping.length());
+    // Get the index of a given character in the rotor
+    public int indexOf(char c){
+        return rotorValues.indexOf(c);
     }
 
-    public boolean rotate() {
-        System.out.println("🔄 Rotating rotor from offset: " + offset);
-        offset = (offset + 1) % mapping.length();
-        System.out.println("   New offset: " + offset);
-        return offset == 0;
+    // Get the character at a specific index in the rotor
+    public char charAt(int idx){
+        return rotorValues.charAt((idx + currentPosition) % rotorValues.length());
     }
 }
