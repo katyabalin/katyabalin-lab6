@@ -4,11 +4,11 @@ import java.util.List;
 public class Enigma {
     private List<Rotor> rotors;
 
-    // Constructor to initialize rotors based on given IDs and start positions
+    // Constructor initializes rotors based on provided IDs and start positions
     public Enigma(int id1, int id2, int id3, String startPositions) {
         rotors = new ArrayList<>();
 
-        // Hardcoded rotor configurations
+        // Predefined rotor configurations
         String[] rotorConfigs = {
             "ABCDEFGHIJKLMNOPQRSTUVWXYZ#",  // Rotor 1
             "EKMFLGDQVZNTOWYHXUSPAIBRCJ#",  // Rotor 2
@@ -17,34 +17,34 @@ public class Enigma {
             "ESOVPZJAYQUIRHXLNFTGKDCMWB#"   // Rotor 5
         };
 
-        // Create rotors based on provided IDs (1-5) and starting positions
+        // Initialize rotors with the selected configurations
         rotors.add(new Rotor(rotorConfigs[id1 - 1], startPositions.charAt(0))); // Inner rotor
         rotors.add(new Rotor(rotorConfigs[id2 - 1], startPositions.charAt(1))); // Middle rotor
         rotors.add(new Rotor(rotorConfigs[id3 - 1], startPositions.charAt(2))); // Outer rotor
     }
 
-    // Encrypts the input message
+    // Encrypt method
     public String encrypt(String input) {
         return process(input, true);
     }
 
-    // Decrypts the input message
+    // Decrypt method
     public String decrypt(String input) {
         return process(input, false);
     }
 
-    // Processes the input string, applying encryption or decryption
+    // Processing logic for encryption and decryption
     private String process(String input, boolean encryptMode) {
         StringBuilder result = new StringBuilder();
 
         for (char c : input.toCharArray()) {
             if (encryptMode) {
-                // Encrypt through the rotors in forward order
+                // Encrypting: Pass character through rotors from inner to outer
                 for (Rotor rotor : rotors) {
                     c = rotor.charAt(rotor.indexOf(c));
                 }
             } else {
-                // Decrypt through the rotors in reverse order
+                // Decrypting: Pass character through rotors in reverse order
                 for (int i = rotors.size() - 1; i >= 0; i--) {
                     c = rotors.get(i).charAt(rotors.get(i).indexOf(c));
                 }
@@ -52,13 +52,12 @@ public class Enigma {
 
             result.append(c);
 
-            // Rotate the first rotor and cascade if necessary
+            // Rotate first rotor every time, cascade rotation like an odometer
             boolean fullRotation = rotors.get(0).rotate();
-            for (int i = 1; i < rotors.size(); i++) {
+            if (fullRotation) {
+                fullRotation = rotors.get(1).rotate();
                 if (fullRotation) {
-                    fullRotation = rotors.get(i).rotate();
-                } else {
-                    break;
+                    rotors.get(2).rotate(); // Rotate outer rotor only if middle rotor completes a full cycle
                 }
             }
         }
@@ -66,7 +65,7 @@ public class Enigma {
         return result.toString();
     }
 
-    // Debug method to print current rotor states
+    // Debug method to print rotor states
     public void printRotorState() {
         for (Rotor r : rotors) {
             System.out.println("Rotor: " + r);
