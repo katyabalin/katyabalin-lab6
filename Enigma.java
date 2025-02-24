@@ -33,16 +33,18 @@ public class Enigma {
         StringBuilder encryptedMessage = new StringBuilder();
 
         for (char c : message.toCharArray()) {
-            // Pass character through rotors in order (inner → middle → outer)
+            char original = c;
+
+            // Pass character through rotors in sequence (inner → middle → outer)
             for (Rotor rotor : rotors) {
                 c = rotor.charAt(rotor.indexOf(c));
             }
 
-            // Append encrypted character
             encryptedMessage.append(c);
+            rotate(); // Rotate after each character
 
-            // Rotate the rotors (cascade rotation like an odometer)
-            rotate();
+            // Debugging output:
+            System.out.println("Encrypting '" + original + "' → '" + c + "'");
         }
 
         return encryptedMessage.toString();
@@ -57,16 +59,18 @@ public class Enigma {
         StringBuilder decryptedMessage = new StringBuilder();
 
         for (char c : message.toCharArray()) {
+            char original = c;
+
             // Pass character through rotors in reverse order (outer → middle → inner)
             for (int i = rotors.length - 1; i >= 0; i--) {
                 c = rotors[i].charAt(rotors[i].indexOf(c));
             }
 
-            // Append decrypted character
             decryptedMessage.append(c);
+            rotate(); // Rotate after each character
 
-            // Rotate the rotors (same as encryption)
-            rotate();
+            // Debugging output:
+            System.out.println("Decrypting '" + original + "' → '" + c + "'");
         }
 
         return decryptedMessage.toString();
