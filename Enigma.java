@@ -1,5 +1,5 @@
 public class Enigma {
-    private Rotor inner, middle, outer;
+    private Rotor[] rotors = new Rotor[3];
 
     private static final String[] ROTORS = {
         "#GNUAHOVBIPWCJQXDKRYELSZFMT",
@@ -9,58 +9,46 @@ public class Enigma {
         "#TGOWHLIFMCSZYRVXQABUPEJKND"
     };
 
-    /**
-     * Constructs an Enigma machine with three rotors.
-     */
     public Enigma(int innerIndex, int middleIndex, int outerIndex, String startPos) {
-        inner = new Rotor(ROTORS[innerIndex - 1], startPos.charAt(0));
-        middle = new Rotor(ROTORS[middleIndex - 1], startPos.charAt(1));
-        outer = new Rotor(ROTORS[outerIndex - 1], startPos.charAt(2));
+        rotors[0] = new Rotor(ROTORS[innerIndex - 1], startPos.charAt(0));
+        rotors[1] = new Rotor(ROTORS[middleIndex - 1], startPos.charAt(1));
+        rotors[2] = new Rotor(ROTORS[outerIndex - 1], startPos.charAt(2));
     }
 
-    /**
-     * Encrypts a given message.
-     */
     public String encrypt(String message) {
         StringBuilder encryptedMessage = new StringBuilder();
 
         for (char c : message.toCharArray()) {
-            int index = inner.getIndex(c);
-            char middleChar = middle.getCharAt(index);
-            index = middle.getIndex(middleChar);
-            char encryptedChar = outer.getCharAt(index);
+            int index = rotors[0].indexOf(c);
+            char middleChar = rotors[1].charAt(index);
+            index = rotors[1].indexOf(middleChar);
+            char encryptedChar = rotors[2].charAt(index);
+
             encryptedMessage.append(encryptedChar);
             rotateRotors();
         }
         return encryptedMessage.toString();
     }
 
-    /**
-     * Decrypts a given message.
-     */
     public String decrypt(String message) {
         StringBuilder decryptedMessage = new StringBuilder();
 
         for (char c : message.toCharArray()) {
-            int index = outer.getIndex(c);
-            char middleChar = middle.getCharAt(index);
-            index = middle.getIndex(middleChar);
-            char decryptedChar = inner.getCharAt(index);
+            int index = rotors[2].indexOf(c);
+            char middleChar = rotors[1].charAt(index);
+            index = rotors[1].indexOf(middleChar);
+            char decryptedChar = rotors[0].charAt(index);
+
             decryptedMessage.append(decryptedChar);
             rotateRotors();
         }
         return decryptedMessage.toString();
     }
 
-    /**
-     * Rotates the rotors following the odometer-like behavior.
-     */
     private void rotateRotors() {
-        inner.rotate();
-        if (inner.hasCompletedFullRotation()) {
-            middle.rotate();
-            if (middle.hasCompletedFullRotation()) {
-                outer.rotate();
+        if (rotors[0].rotate()) {
+            if (rotors[1].rotate()) {
+                rotors[2].rotate();
             }
         }
     }
