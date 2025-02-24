@@ -29,14 +29,21 @@ public class Rotor {
     /**
      * Returns the index of a given character in the rotor sequence.
      */
-    public int indexOf(char c) {
+    public int getIndex(char c) {
         return rotorValues.indexOf(c);
     }
 
     /**
      * Returns the character at the given index in the rotor sequence.
      */
-    public char charAt(int idx) {
+    public char getCharAt(int idx) {
         return rotorValues.charAt(idx);
+    }
+
+    /**
+     * Checks if the rotor has completed a full rotation.
+     */
+    public boolean hasCompletedFullRotation() {
+        return rotorValues.charAt(0) == startChar;
     }
 }
