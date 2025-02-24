@@ -30,27 +30,26 @@ public class Enigma {
      * @return The encrypted message.
      */
     public String encrypt(String message) {
-    StringBuilder encryptedMessage = new StringBuilder();
+        StringBuilder encryptedMessage = new StringBuilder();
 
-    for (char c : message.toCharArray()) {
-        char original = c;
+        for (char c : message.toCharArray()) {
+            char original = c;
 
-        // Pass character through rotors in sequence (inner → middle → outer)
-        for (Rotor rotor : rotors) {
-            int index = rotor.indexOf(c);  // Find index in rotor
-            c = rotor.charAt(index);       // Get mapped character
+            // Step through rotors in sequence (inner → middle → outer)
+            for (Rotor rotor : rotors) {
+                int index = rotor.indexOf(c);  // Find the index of 'c' in current rotor
+                c = rotors[rotors.length - 1].charAt(index); // Get mapped character
+            }
+
+            encryptedMessage.append(c);
+            rotate(); // Rotate after each character
+
+            // Debugging output:
+            System.out.println("Encrypting '" + original + "' → '" + c + "'");
         }
 
-        encryptedMessage.append(c);
-        rotate(); // Rotate after each character
-
-        // Debugging output:
-        System.out.println("Encrypting '" + original + "' → '" + c + "'");
+        return encryptedMessage.toString();
     }
-
-    return encryptedMessage.toString();
-}
-
 
     /**
      * Decrypts the given message.
@@ -58,27 +57,26 @@ public class Enigma {
      * @return The decrypted message.
      */
     public String decrypt(String message) {
-    StringBuilder decryptedMessage = new StringBuilder();
+        StringBuilder decryptedMessage = new StringBuilder();
 
-    for (char c : message.toCharArray()) {
-        char original = c;
+        for (char c : message.toCharArray()) {
+            char original = c;
 
-        // Pass character through rotors in reverse order (outer → middle → inner)
-        for (int i = rotors.length - 1; i >= 0; i--) {
-            int index = rotors[i].indexOf(c);  // Find index of encrypted character
-            c = rotors[i].charAt(index);       // Find corresponding plaintext char
+            // Step through rotors in reverse order (outer → middle → inner)
+            for (int i = rotors.length - 1; i >= 0; i--) {
+                int index = rotors[i].indexOf(c); // Find the index in rotor
+                c = rotors[i].charAt(index);      // Get mapped character
+            }
+
+            decryptedMessage.append(c);
+            rotate(); // Rotate after each character
+
+            // Debugging output:
+            System.out.println("Decrypting '" + original + "' → '" + c + "'");
         }
 
-        decryptedMessage.append(c);
-        rotate(); // Rotate after each character
-
-        // Debugging output:
-        System.out.println("Decrypting '" + original + "' → '" + c + "'");
+        return decryptedMessage.toString();
     }
-
-    return decryptedMessage.toString();
-}
-
 
     /**
      * Rotates the rotors like an odometer.
