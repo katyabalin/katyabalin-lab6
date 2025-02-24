@@ -21,10 +21,13 @@ public class Enigma {
         for (char c : message.toCharArray()) {
             int index = rotors[0].indexOf(c);
             char step1 = rotors[0].charAt(index);
+
             int index2 = rotors[1].indexOf(step1);
             char step2 = rotors[1].charAt(index2);
+
             int index3 = rotors[2].indexOf(step2);
             char step3 = rotors[2].charAt(index3);
+
             result.append(step3);
             rotate();
         }
@@ -36,10 +39,13 @@ public class Enigma {
         for (char c : message.toCharArray()) {
             int index3 = rotors[2].indexOf(c);
             char step3 = rotors[2].charAt(index3);
+
             int index2 = rotors[1].indexOf(step3);
             char step2 = rotors[1].charAt(index2);
+
             int index1 = rotors[0].indexOf(step2);
             char step1 = rotors[0].charAt(index1);
+
             result.append(step1);
             rotate();
         }
