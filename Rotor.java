@@ -11,22 +11,18 @@ public class Rotor {
 
     public boolean rotate() {
         currentPosition = (currentPosition + 1) % rotorValues.length();
-        System.out.printf("🔄 Rotor Stepped to Position: %d\n", currentPosition);
+        System.out.printf("🔄 Rotor Stepped to Position: %d (%c)\n", currentPosition, rotorValues.charAt(currentPosition));
         return currentPosition == 0;
     }
 
     public int indexOf(char c) {
         int index = rotorValues.indexOf(c);
-        if (index == -1) {
-            System.out.println("❌ Character '" + c + "' not found in rotor.");
-            return -1;
-        }
+        if (index == -1) return -1;
         int adjustedIndex = (index - currentPosition + rotorValues.length()) % rotorValues.length();
         return adjustedIndex;
     }
 
     public char charAt(int idx) {
-        char result = rotorValues.charAt((idx + currentPosition) % rotorValues.length());
-        return result;
+        return rotorValues.charAt((idx + currentPosition) % rotorValues.length());
     }
 }
