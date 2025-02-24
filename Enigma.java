@@ -1,64 +1,70 @@
+import java.util.List;
+
 public class Enigma {
-    private final String[] rotorInit = {
-        "#GNUAHOVBIPWCJQXDKRYELSZFMT",
-        "#EJOTYCHMRWAFKPUZDINSXBGLQV",
-        "#BDFHJLNPRTVXZACEGIKMOQSUWY",
-        "#NWDKHGXZVRIFJBLMAOPSCYUTQE",
-        "#TGOWHLIFMCSZYRVXQABUPEJKND"
-    };
 
-    private Rotor[] rotors;
+    private List<Rotor> rotors;
 
-    public Enigma(int id1, int id2, int id3, String start) {
-        rotors = new Rotor[3];
-        rotors[0] = new Rotor(rotorInit[id1 - 1], start.charAt(0));
-        rotors[1] = new Rotor(rotorInit[id2 - 1], start.charAt(1));
-        rotors[2] = new Rotor(rotorInit[id3 - 1], start.charAt(2));
+    /**
+     * Constructs an Enigma machine with a list of three rotors.
+     * @param rotors The list of rotors used in encryption/decryption.
+     */
+    public Enigma(List<Rotor> rotors) {
+        this.rotors = rotors;
     }
 
-    public String encrypt(String message) {
+    /**
+     * Encrypts or decrypts a given message.
+     * @param input The message to process.
+     * @param encryptMode True for encryption, False for decryption.
+     * @return The processed string.
+     */
+    private String process(String input, boolean encryptMode) {
         StringBuilder result = new StringBuilder();
-        for (char c : message.toCharArray()) {
-            int index1 = rotors[0].indexOf(c);
-            if (index1 == -1) continue;
 
-            char step1 = rotors[1].charAt(index1);
-            int index2 = rotors[1].indexOf(step1);
-            char step2 = rotors[2].charAt(index2);
-            result.append(step2);
+        for (char c : input.toCharArray()) {
+            for (Rotor rotor : rotors) {
+                c = encryptMode ? rotor.charAt(rotor.indexOf(c)) : rotor.indexOf(rotor.charAt(c));
+            }
+            result.append(c);
 
-            rotate();
-        }
-        return result.toString();
-    }
-
-    public String decrypt(String message) {
-        StringBuilder result = new StringBuilder();
-        for (char c : message.toCharArray()) {
-            int index2 = rotors[2].indexOf(c);
-            if (index2 == -1) continue;
-
-            char step2 = rotors[1].charAt(index2);
-            int index1 = rotors[1].indexOf(step2);
-            char step1 = rotors[0].charAt(index1);
-            result.append(step1);
-
-            rotate();
-        }
-        return result.toString();
-    }
-
-    private void rotate() {
-        System.out.println("Before Rotation:");
-        for (Rotor r : rotors) r.printRotorState();
-
-        if (rotors[0].rotate()) {
-            if (rotors[1].rotate()) {
-                rotors[2].rotate();
+            // Rotate the first rotor and cascade rotation if necessary
+            boolean fullRotation = rotors.get(0).rotate();
+            for (int i = 1; i < rotors.size(); i++) {
+                if (fullRotation) {
+                    fullRotation = rotors.get(i).rotate();
+                } else {
+                    break;
+                }
             }
         }
 
-        System.out.println("After Rotation:");
-        for (Rotor r : rotors) r.printRotorState();
+        return result.toString();
+    }
+
+    /**
+     * Encrypts a given input string.
+     * @param input The plaintext to encrypt.
+     * @return The encrypted text.
+     */
+    public String encrypt(String input) {
+        return process(input, true);
+    }
+
+    /**
+     * Decrypts a given input string.
+     * @param input The ciphertext to decrypt.
+     * @return The decrypted text.
+     */
+    public String decrypt(String input) {
+        return process(input, false);
+    }
+
+    /**
+     * Debugging function to print the state of all rotors.
+     */
+    public void printRotorStates() {
+        for (Rotor rotor : rotors) {
+            rotor.printRotorState();
+        }
     }
 }
