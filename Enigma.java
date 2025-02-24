@@ -1,8 +1,7 @@
 public class Enigma {
     private Rotor[] rotors = new Rotor[3];
 
-    private static final String[] ROTORS = {
-        "#GNUAHOVBIPWCJQXDKRYELSZFMT",
+    private String rotorInit[] = {"#GNUAHOVBIPWCJQXDKRYELSZFMT",
         "#EJOTYCHMRWAFKPUZDINSXBGLQV",
         "#BDFHJLNPRTVXZACEGIKMOQSUWY",
         "#NWDKHGXZVRIFJBLMAOPSCYUTQE",
@@ -10,9 +9,9 @@ public class Enigma {
     };
 
     public Enigma(int innerIndex, int middleIndex, int outerIndex, String startPos) {
-        rotors[0] = new Rotor(ROTORS[innerIndex - 1], startPos.charAt(0));
-        rotors[1] = new Rotor(ROTORS[middleIndex - 1], startPos.charAt(1));
-        rotors[2] = new Rotor(ROTORS[outerIndex - 1], startPos.charAt(2));
+        rotors[0] = new Rotor(rotorInit[innerIndex - 1], startPos.charAt(0));
+        rotors[1] = new Rotor(rotorInit[middleIndex - 1], startPos.charAt(1));
+        rotors[2] = new Rotor(rotorInit[outerIndex - 1], startPos.charAt(2));
     }
 
     public String encrypt(String message) {
