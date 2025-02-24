@@ -1,55 +1,51 @@
 public class Rotor {
-    
-    private String rotorValues;
-    private int position;
-    private char startChar;
+    private String mapping;
+    private int offset;
 
     /**
-     * Constructs a Rotor with a given substitution pattern and starting character.
-     * @param v The string representing the rotor mapping (length 27: A-Z + #).
-     * @param c The starting character for the rotor.
+     * Constructs a rotor with the given mapping and starting position.
+     * @param mapping The rotor's character mapping.
+     * @param start The starting character.
      */
-    public Rotor(String v, char c) {
-        this.rotorValues = v;
-        this.position = rotorValues.indexOf(c); // Set initial position to where 'c' appears in the rotor
-        this.startChar = c;
+    public Rotor(String mapping, char start) {
+        this.mapping = mapping;
+        this.offset = mapping.indexOf(start);
     }
 
     /**
-     * Rotates the rotor one step forward (like an odometer).
-     * @return true if a full rotation occurred (i.e., returned to original position).
-     */
-    public boolean rotate() {
-        position = (position + 1) % rotorValues.length();
-        return rotorValues.charAt(position) == startChar; // Returns true if full rotation happens
-    }
-
-    /**
-     * Finds the index of a given character in the rotor's current configuration.
-     * @param c The character to find.
-     * @return The adjusted index based on the current rotor position.
+     * Finds the index of a character in the rotor's mapping.
+     * @param c The character to look for.
+     * @return The index of the character.
      */
     public int indexOf(char c) {
-        int originalIndex = rotorValues.indexOf(c);
-        if (originalIndex == -1) {
-            throw new IllegalArgumentException("Character not found in rotor: " + c);
-        }
-        return (originalIndex - position + rotorValues.length()) % rotorValues.length();
+        int index = mapping.indexOf(c);
+        if (index == -1) return 0;  // Default case if not found
+        return (index + offset) % mapping.length();
     }
 
     /**
-     * Gets the character at a given index, adjusted for rotor rotation.
-     * @param idx The index to fetch from the rotor.
-     * @return The corresponding character.
+     * Gets the character at a given index in the rotor's mapping.
+     * @param index The index.
+     * @return The character at the index.
      */
-    public char charAt(int idx) {
-        return rotorValues.charAt((idx + position) % rotorValues.length());
+    public char charAt(int index) {
+        return mapping.charAt((index - offset + mapping.length()) % mapping.length());
     }
 
     /**
-     * Prints the current rotor state (for debugging).
+     * Rotates the rotor forward by one position.
+     * @return True if a full rotation was completed.
+     */
+    public boolean rotate() {
+        offset = (offset + 1) % mapping.length();
+        return offset == 0; // Return true if full rotation happened
+    }
+
+    /**
+     * Debugging method to print current rotor state.
      */
     public void printRotorState() {
-        System.out.println("Rotor Position: " + position + " | Current Char: " + rotorValues.charAt(position));
+        System.out.println("Rotor mapping: " + mapping);
+        System.out.println("Rotor offset: " + offset);
     }
 }
