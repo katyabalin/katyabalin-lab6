@@ -23,12 +23,17 @@ public class Enigma {
         for (char ch : message.toCharArray()) {
             // Step through the rotors: inner -> middle -> outer
             int idx1 = rotors[0].indexOf(ch);
+            if (idx1 == -1) {
+                encryptedMessage.append(ch);
+                continue;
+            }
+
             char char2 = rotors[1].charAt(idx1);
             int idx2 = rotors[1].indexOf(char2);
             char finalChar = rotors[2].charAt(idx2);
-            
+
             encryptedMessage.append(finalChar);
-            
+
             // Rotate the rotors after each letter
             rotate();
         }
@@ -42,12 +47,17 @@ public class Enigma {
         for (char ch : message.toCharArray()) {
             // Reverse the steps: outer -> middle -> inner
             int idx2 = rotors[2].indexOf(ch);
+            if (idx2 == -1) {
+                decryptedMessage.append(ch);
+                continue;
+            }
+
             char char1 = rotors[1].charAt(idx2);
             int idx1 = rotors[1].indexOf(char1);
             char finalChar = rotors[0].charAt(idx1);
-            
+
             decryptedMessage.append(finalChar);
-            
+
             // Rotate the rotors after each letter
             rotate();
         }
