@@ -27,12 +27,13 @@ public class Enigma {
         for (char c : message.toCharArray()) {
             System.out.println("\nEncrypting: " + c);
 
+            // Encoding through the rotors in order
             int index1 = rotors[0].indexOf(c);
-            char step1 = rotors[0].charAt(index1);
+            char step1 = rotors[1].charAt(index1);
             System.out.println("Step 1: " + c + " -> " + step1 + " (Index: " + index1 + ")");
 
             int index2 = rotors[1].indexOf(step1);
-            char step2 = rotors[1].charAt(index2);
+            char step2 = rotors[2].charAt(index2);
             System.out.println("Step 2: " + step1 + " -> " + step2 + " (Index: " + index2 + ")");
 
             int index3 = rotors[2].indexOf(step2);
@@ -53,6 +54,7 @@ public class Enigma {
         for (char c : message.toCharArray()) {
             System.out.println("\nDecrypting: " + c);
 
+            // Decoding through the rotors in reverse order
             int index3 = rotors[2].indexOf(c);
             char step3 = rotors[2].charAt(index3);
             System.out.println("Step 3: " + c + " -> " + step3 + " (Index: " + index3 + ")");
@@ -74,11 +76,15 @@ public class Enigma {
 
     private void rotate() {
         System.out.println("Before Rotation: " + rotors[0].charAt(0) + " " + rotors[1].charAt(0) + " " + rotors[2].charAt(0));
-        if (rotors[0].rotate()) {
-            if (rotors[1].rotate()) {
+        
+        boolean rotateNext = rotors[0].rotate();
+        if (rotateNext) {
+            rotateNext = rotors[1].rotate();
+            if (rotateNext) {
                 rotors[2].rotate();
             }
         }
+
         System.out.println("After Rotation: " + rotors[0].charAt(0) + " " + rotors[1].charAt(0) + " " + rotors[2].charAt(0));
     }
 }
